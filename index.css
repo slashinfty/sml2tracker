@@ -1,0 +1,33 @@
+@font-face {
+	font-family: "GB";
+	src: url("fonts/Early GameBoy.ttf") format("truetype"), local("Early GameBoy");
+}
+
+p {
+	position: absolute;
+}
+
+.label {
+	writing-mode: vertical-lr;
+	text-orietation: sideways;
+}
+
+body {
+	font-family: "GB", sans-serif;
+	background: #000 url(images/back.png) no-repeat;
+	color: #fff;
+}
+
+.toggle {
+    position: absolute;
+}
+
+.square {
+	height: 64px;
+    width: 64px;
+}
+
+.wide {
+	height: 40px;
+	width: 200px;
+}

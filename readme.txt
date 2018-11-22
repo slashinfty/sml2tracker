@@ -1,0 +1,1 @@
+Tracker for Super Mario Land 2: 6 Golden Coins randomizer, written in HTML, CSS, and vanilla JavaScript.
