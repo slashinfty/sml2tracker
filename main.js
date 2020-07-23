@@ -1,3 +1,33 @@
+document.addEventListener("DOMContentLoaded", () => {
+    let url = new URL(window.location.href);
+    if (url.searchParams.has('s') && url.searchParams.has('f')) {
+        let cleanFlags = flagSubmit => {
+            let flagArray = flagSubmit.split('+');
+            let flags = flagArray[0];
+            //strip out extraneous characters
+            flags = flags.replace(/[^lwbDdceupBgixXsfFmMho+]/g, '');
+            //strip out duplicate characters
+            flags = flags.split('').filter((x, n, s) => s.indexOf(x) == n).join('');
+            //disallow and strip out one-of settings
+            if (flags.includes('w') && !flags.includes('l')) flags = 'l' + flags;
+            if (flags.includes('D') && flags.includes('d')) flags = flags.replace(/[dD]/g, '');
+            if (flags.includes('x') && flags.includes('X')) flags = flags.replace(/[xX]/g, '');
+            if (flags.includes('f') && flags.includes('F')) flags = flags.replace(/[fF]/g, '');
+            if (flags.includes('Z') && (flags.includes('M') || flags.includes('m'))) flags = flags.replace(/[ZMm]/g, '');
+            flags = flagArray.length > 1 ? flags + '+' + flagArray[1] : flags; //expand later
+            return flags;
+        }
+        let seed = url.searchParams.get('s');
+        if (seed.length === 8 && ("00000000" + parseInt(seed, 16).toString(16).toUpperCase()).substr(-8) === seed) {
+            document.getElementById('seed').value = seed;
+            document.getElementById('seedtext').innerHTML = seed;
+        }
+        let flags = cleanFlags(url.searchParams.get('f').replace(' ', '+'));
+        document.getElementById('flags').value = flags;
+        document.getElementById('flagstext').innerHTML = flags;
+    }
+});
+
 document.addEventListener('click', function (event) {
 	if (!event.target.matches('.toggle')) return;
 	if (event.target.style.backgroundImage.replace(/"/g, "") == event.target.dataset.imgoff) {
@@ -24,7 +54,7 @@ document.getElementById('reset').addEventListener('click', function () {
 });
 
 document.getElementById('clipboard').addEventListener('click', function () {
-	if (document.getElementById('seed').value.length != 8 || document.getElementById('flags').value.length != 4) return;
+	if (document.getElementById('seed').value.length != 8 || document.getElementById('flags').value.length === 0) return;
 	let seed = document.getElementById('seed').value;
 	let flags = document.getElementById('flags').value;
 	let link = "http://sml2r.download/?s=" + seed + "&f=" + flags;
